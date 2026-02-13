@@ -8,6 +8,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Fruit Catcher Game', home: GameScreen());
+    return MaterialApp(title: 'Fruit Catcher Game', home: GameScreen(),
+    debugShowCheckedModeBanner: false,);
+    
   }
 }

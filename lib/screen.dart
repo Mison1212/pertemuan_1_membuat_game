@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 
-class GameScreen extends StatelessWidget {
-  const GameScreen({super.key});
+class GameScreen extends StatefulWidget {
+  const GameScreen ({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-            body: Center(
-              child: Text('Game akan di tampilkan disini'),
-            ),
-          );
-  }
+  State <GameScreen> createState() => _GameScreenState();
 }
+
+class _GameScreenState extends State<GameScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Stack(
+      children: [
+        Positioned(
+          top: 50,
+          left: 20,
+          child: Container(
+
+          ), 
+        )
+      ],
+    ),
+  );
+}
+  
+}
+
