@@ -97,7 +97,6 @@ class FruitCatcherGame extends FlameGame
     scoreNotifier.value = 0;
     fruitSpawnTimer = 0;
 
-    // Hapus semua fruit
     children.whereType<Fruit>().forEach((fruit) => fruit.removeFromParent());
 
     AudioManager().playBackgroundMusic();
@@ -117,13 +116,11 @@ class FruitCatcherGame extends FlameGame
     super.render(canvas);
 
     if (_isGameOver) {
-      // Semi-transparent overlay
       canvas.drawRect(
         Rect.fromLTWH(0, 0, size.x, size.y),
         Paint()..color = Colors.black.withOpacity(0.5),
       );
 
-      // Game Over text
       final textPainter = TextPainter(
         text: const TextSpan(
           text: 'GAME OVER',
@@ -141,7 +138,6 @@ class FruitCatcherGame extends FlameGame
         Offset(size.x / 2 - textPainter.width / 2, size.y / 2 - 80),
       );
 
-      // Score text
       final scorePainter = TextPainter(
         text: TextSpan(
           text: 'Score: $_score',
@@ -155,7 +151,6 @@ class FruitCatcherGame extends FlameGame
         Offset(size.x / 2 - scorePainter.width / 2, size.y / 2 - 10),
       );
 
-      // Tap to restart text
       final restartPainter = TextPainter(
         text: const TextSpan(
           text: 'Tap Screen to Restart',
