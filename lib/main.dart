@@ -76,29 +76,6 @@ class _GameScreenState extends State<GameScreen> {
               ],
             ),
           ),
-          Positioned(
-            top: 120,
-            right: 20,
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: Slider(
-                    value: AudioManager().getMusicVolume(),
-                    onChanged: (value) {
-                      AudioManager().setMusicVolume(value);
-                    },
-                    min: 0.0,
-                    max: 1.0,
-                  ),
-                ),
-                const Text(
-                  'Volume',
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
