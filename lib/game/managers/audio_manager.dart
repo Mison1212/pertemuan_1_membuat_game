@@ -2,39 +2,43 @@ import 'package:flame_audio/flame_audio.dart';
 
 class AudioManager {
   static final AudioManager _instance = AudioManager._internal();
-  factory AudioManager() => _instance;
+  
+  bool _musicEnabled = true;
+  bool _sfxEnabled = true;
+
+  factory AudioManager() {
+    return _instance;
+  }
+
   AudioManager._internal();
 
-  bool _isMusicEnabled = true;
-  bool _isSfxEnabled = true;
-  double _musicVolume = 0.7;
-  
-
   Future<void> initialize() async {
-    try {
-      await FlameAudio.audioCache.loadAll([
-        'music/background_music.mp3',
-        'sfx/collect.mp3',
-        'sfx/explosion.mp3',
-        'sfx/jump.mp3',
-      ]);
-    } catch (e) {
-      print('Error initializing audio: $e');
+  }
+
+  Future<void> playBackgroundMusic() async {
+    if (_musicEnabled) {
+      await FlameAudio.bgm.play('background_music.mp3');
     }
   }
 
-  void playBackgroundMusic() {
-    if (_isMusicEnabled) {
-      FlameAudio.bgm.play('music/background_music.mp3', volume: _musicVolume);
+  void playSfx(String filename) {
+    if (_sfxEnabled) {
+      FlameAudio.play(filename);
     }
+  }
+
+  void stopBackgroundMusic() {
+    FlameAudio.bgm.stop();
   }
 
   void toggleMusic() {
-    _isMusicEnabled = !_isMusicEnabled;
-    _isMusicEnabled ? FlameAudio.bgm.resume() : FlameAudio.bgm.pause();
+    _musicEnabled = !_musicEnabled;
+    if (!_musicEnabled) {
+      stopBackgroundMusic();
+    }
   }
 
   void toggleSfx() {
-    _isSfxEnabled = !_isSfxEnabled;
+    _sfxEnabled = !_sfxEnabled;
   }
 }
