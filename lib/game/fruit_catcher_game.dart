@@ -3,13 +3,14 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'components/basket.dart';
 import 'components/fruit.dart';
 import 'managers/audio_manager.dart';
 
 class FruitCatcherGame extends FlameGame
-    with PanDetector, HasCollisionDetection {
+    with PanDetector, HasCollisionDetection, TapDetector {
   late Basket basket;
   final Random random = Random();
 
@@ -69,15 +70,28 @@ class FruitCatcherGame extends FlameGame
     );
   }
 
+  @override
   void onTapDown(TapDownInfo info) {
     if (_isGameOver) {
-      restart();
+      
+      final tapPosition =
+          info.eventPosition.global; 
+
+      final restartButtonRect = Rect.fromCenter(
+        center: Offset(size.x / 2, size.y / 2 + 60),
+        width: 250,
+        height: 60,
+      );
+
+      if (restartButtonRect.contains(tapPosition.toOffset())) {
+        restart();
+      }
     }
   }
 
   void incrementScore() {
     score++;
-    AudioManager().playSfx('assets/audio/sfx/coin-collect.mp3');
+    AudioManager().playSfx('collect.mp3');
   }
 
   void checkGameOver(Fruit fruit) {
@@ -88,7 +102,7 @@ class FruitCatcherGame extends FlameGame
   }
 
   void gameOver() {
-    AudioManager().playSfx('assets/audio/sfx/delon-bomkin.mp3');
+    AudioManager().playSfx('explosion.mp3');
   }
 
   void restart() {
@@ -151,17 +165,32 @@ class FruitCatcherGame extends FlameGame
         Offset(size.x / 2 - scorePainter.width / 2, size.y / 2 - 10),
       );
 
+      final buttonRect = Rect.fromCenter(
+        center: Offset(size.x / 2, size.y / 2 + 60),
+        width: 250,
+        height: 60,
+      );
+
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(buttonRect, const Radius.circular(10)),
+        Paint()..color = Colors.yellow,
+      );
+
       final restartPainter = TextPainter(
         text: const TextSpan(
-          text: 'Tap Screen to Restart',
-          style: TextStyle(color: Colors.yellow, fontSize: 24),
+          text: 'TAP TO RESTART',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         textDirection: TextDirection.ltr,
       );
       restartPainter.layout();
       restartPainter.paint(
         canvas,
-        Offset(size.x / 2 - restartPainter.width / 2, size.y / 2 + 60),
+        Offset(size.x / 2 - restartPainter.width / 2, size.y / 2 + 45),
       );
     }
   }
