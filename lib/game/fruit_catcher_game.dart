@@ -11,7 +11,6 @@ import 'managers/audio_manager.dart';
 class FruitCatcherGame extends FlameGame
     with PanDetector, HasCollisionDetection {
   late Basket basket;
-  late TextComponent scoreText;
   final Random random = Random();
 
   double fruitSpawnTimer = 0;
@@ -61,13 +60,20 @@ class FruitCatcherGame extends FlameGame
   @override
   void onPanUpdate(DragUpdateInfo info) {
     if (_isGameOver) return;
-    
+
     basket.position.x += info.delta.global.x;
 
     basket.position.x = basket.position.x.clamp(
       basket.size.x / 2,
       size.x - basket.size.x / 2,
     );
+  }
+
+  @override
+  void onTapDown(TapDownInfo info) {
+    if (_isGameOver) {
+      restart();
+    }
   }
 
   void incrementScore() {
@@ -84,7 +90,18 @@ class FruitCatcherGame extends FlameGame
 
   void gameOver() {
     AudioManager().playSfx('explosion.mp3');
-    pauseEngine();
+  }
+
+  void restart() {
+    _isGameOver = false;
+    _score = 0;
+    scoreNotifier.value = 0;
+    fruitSpawnTimer = 0;
+
+    // Hapus semua fruit
+    children.whereType<Fruit>().forEach((fruit) => fruit.removeFromParent());
+
+    AudioManager().playBackgroundMusic();
   }
 
   @override
@@ -95,4 +112,63 @@ class FruitCatcherGame extends FlameGame
 
   @override
   Color backgroundColor() => const Color(0xFF87CEEB);
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    if (_isGameOver) {
+      // Semi-transparent overlay
+      canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.x, size.y),
+        Paint()..color = Colors.black.withOpacity(0.5),
+      );
+
+      // Game Over text
+      final textPainter = TextPainter(
+        text: const TextSpan(
+          text: 'GAME OVER',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 48,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+      textPainter.paint(
+        canvas,
+        Offset(size.x / 2 - textPainter.width / 2, size.y / 2 - 80),
+      );
+
+      // Score text
+      final scorePainter = TextPainter(
+        text: TextSpan(
+          text: 'Score: $_score',
+          style: const TextStyle(color: Colors.white, fontSize: 32),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      scorePainter.layout();
+      scorePainter.paint(
+        canvas,
+        Offset(size.x / 2 - scorePainter.width / 2, size.y / 2 - 10),
+      );
+
+      // Tap to restart text
+      final restartPainter = TextPainter(
+        text: const TextSpan(
+          text: 'Tap Screen to Restart',
+          style: TextStyle(color: Colors.yellow, fontSize: 24),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      restartPainter.layout();
+      restartPainter.paint(
+        canvas,
+        Offset(size.x / 2 - restartPainter.width / 2, size.y / 2 + 60),
+      );
+    }
+  }
 }
