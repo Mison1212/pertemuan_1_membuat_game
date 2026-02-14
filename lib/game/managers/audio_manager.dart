@@ -5,7 +5,7 @@ class AudioManager {
 
   bool _musicEnabled = true;
   bool _sfxEnabled = true;
-  double _musicVolume = 0.5; // Volume 0.0 - 1.0
+  double _musicVolume = 0.5; 
   double _sfxVolume = 0.5;
 
   factory AudioManager() {
