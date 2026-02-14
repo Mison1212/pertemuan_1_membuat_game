@@ -19,14 +19,19 @@ class AudioManager {
   Future<void> playBackgroundMusic() async {
     if (_musicEnabled) {
       try {
+        print('=== STARTING MUSIC ===');
+        print('File path: audio/musik/background_music.mp3');
+        print('Volume: $_musicVolume');
         await FlameAudio.bgm.play(
           'audio/musik/background_music.mp3',
           volume: _musicVolume,
         );
-        print('Music started with volume: $_musicVolume');
+        print('✓ Music started successfully!');
       } catch (e) {
-        print('ERROR playing music: $e');
+        print('✗ ERROR playing music: $e');
       }
+    } else {
+      print('Music is disabled');
     }
   }
 
