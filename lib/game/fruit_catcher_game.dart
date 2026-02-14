@@ -19,6 +19,7 @@ class FruitCatcherGame extends FlameGame
 
   final ValueNotifier<int> scoreNotifier = ValueNotifier<int>(0);
   int _score = 0;
+  bool _isGameOver = false;
 
   int get score => _score;
   set score(int value) {
@@ -42,6 +43,8 @@ class FruitCatcherGame extends FlameGame
   void update(double dt) {
     super.update(dt);
 
+    if (_isGameOver) return;
+
     fruitSpawnTimer += dt;
     if (fruitSpawnTimer >= fruitSpawnInterval) {
       spawnFruit();
@@ -57,6 +60,8 @@ class FruitCatcherGame extends FlameGame
 
   @override
   void onPanUpdate(DragUpdateInfo info) {
+    if (_isGameOver) return;
+    
     basket.position.x += info.delta.global.x;
 
     basket.position.x = basket.position.x.clamp(
@@ -68,6 +73,13 @@ class FruitCatcherGame extends FlameGame
   void incrementScore() {
     score++;
     AudioManager().playSfx('collect.mp3');
+  }
+
+  void checkGameOver(Fruit fruit) {
+    if (fruit.position.y > size.y && !_isGameOver) {
+      _isGameOver = true;
+      gameOver();
+    }
   }
 
   void gameOver() {
