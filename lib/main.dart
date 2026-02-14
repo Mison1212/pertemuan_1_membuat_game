@@ -38,7 +38,7 @@ class _GameScreenState extends State<GameScreen> {
       body: Stack(
         children: [
           GameWidget(game: game),
-          
+
           Positioned(
             top: 50,
             left: 20,
@@ -59,7 +59,7 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
           ),
-          
+
           Positioned(
             top: 50,
             right: 20,
@@ -72,6 +72,29 @@ class _GameScreenState extends State<GameScreen> {
                 IconButton(
                   icon: const Icon(Icons.volume_up, color: Colors.black),
                   onPressed: () => AudioManager().toggleSfx(),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 120,
+            right: 20,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: Slider(
+                    value: AudioManager().getMusicVolume(),
+                    onChanged: (value) {
+                      AudioManager().setMusicVolume(value);
+                    },
+                    min: 0.0,
+                    max: 1.0,
+                  ),
+                ),
+                const Text(
+                  'Volume',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ],
             ),
