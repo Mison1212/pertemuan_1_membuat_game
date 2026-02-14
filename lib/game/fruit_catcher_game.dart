@@ -69,7 +69,6 @@ class FruitCatcherGame extends FlameGame
     );
   }
 
-  @override
   void onTapDown(TapDownInfo info) {
     if (_isGameOver) {
       restart();
