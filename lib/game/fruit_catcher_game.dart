@@ -77,7 +77,7 @@ class FruitCatcherGame extends FlameGame
 
   void incrementScore() {
     score++;
-    AudioManager().playSfx('collect.mp3');
+    AudioManager().playSfx('assets/audio/sfx/coin-collect.mp3');
   }
 
   void checkGameOver(Fruit fruit) {
@@ -88,7 +88,7 @@ class FruitCatcherGame extends FlameGame
   }
 
   void gameOver() {
-    AudioManager().playSfx('explosion.mp3');
+    AudioManager().playSfx('assets/audio/sfx/delon-bomkin.mp3');
   }
 
   void restart() {
